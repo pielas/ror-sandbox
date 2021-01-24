@@ -1,0 +1,45 @@
+version: '3'
+services:
+ elasticsearch:
+  build:
+   context: ./elasticsearch
+   args:
+    - ELASTICSEARCH_VERSION=$ELASTICSEARCH_VERSION
+    - ELASTICSEARCH_LOCATION=$ELASTICSEARCH_LOCATION
+  volumes:
+   - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+   - ./elasticsearch/readonlyrest.yml:/usr/share/elasticsearch/config/readonlyrest.yml
+   - ./elasticsearch/jvm.options:/usr/share/elasticsearch/config/jvm.options
+  ports:
+   - 9200:9200
+   - 8888:8888
+
+ kibana:
+  build:
+   context: ./kibana
+   args:
+    - KIBANA_VERSION=$ELASTICSEARCH_VERSION
+    - KIBANA_PLUGIN_LOCATION=$KIBANA_LOCATION
+  volumes:
+   - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+   - kibana_optimization_data:/usr/share/kibana/optimize
+  ports:
+   - 5601:5601
+
+ kibana-oss:
+  build:
+   context: ./kibana-oss
+   args:
+    - KIBANA_VERSION=$ELASTICSEARCH_VERSION
+    - KIBANA_PLUGIN_LOCATION=$KIBANA_LOCATION
+  volumes:
+   - ./kibana-oss/kibana.yml:/usr/share/kibana/config/kibana.yml
+   - kibana_oss_optimization_data:/usr/share/kibana/optimize
+  ports:
+   - 5601:5601
+
+
+volumes:
+ kibana_optimization_data:
+ kibana_oss_optimization_data:
+     
