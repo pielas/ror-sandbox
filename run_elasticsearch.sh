@@ -1,4 +1,4 @@
-. ./common.sh
+. ./dc-internals/common.sh
 
 echo Elasticsearch version: $ELASTICSEARCH_VERSION
 echo ROR plugin location: $ELASTICSEARCH_LOCATION
