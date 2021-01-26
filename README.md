@@ -38,21 +38,22 @@ For most purposes it should be enough to change only files under `conf` director
 ### env_configuration file 
 This contains environment variables used to configure sandbox. Here's description of each variable:
 * `ELASTICSEARCH_VERSION` - version of elasticsearch and kibana server to use. Currently it's not possible to run different version of elasticsearch and kibana.
-* `CUSTOM_ROR_ELASTICSEARCH_LOCATION` - specifies custom URL for elasticsearch ROR plugin. For example could be used to run elastic with file from S3. When empty, ROR will be downloaded from `https://api.beshu.tech/download/es?esVersion=$ELASTICSEARCH_VERSION`
-* `CUSTOM_ROR_KIBANA_LOCATION` - specifies custom URL for kibana ROR plugin. For example could be used to run kibana with file from S3. When empty, ROR will be downloaded from `https://api.beshu.tech/download/trial?esVersion=$ELASTICSEARCH_VERSION`
+* `CUSTOM_ROR_ELASTICSEARCH_LOCATION` - specifies custom URL for elasticsearch ROR plugin. For example could be used to run elastic with file from S3. When empty, latest ROR will be downloaded from `https://api.beshu.tech/download/es?esVersion=$ELASTICSEARCH_VERSION`
+* `CUSTOM_ROR_KIBANA_LOCATION` - specifies custom URL for kibana ROR plugin. For example could be used to run kibana with file from S3. When empty, latest ROR will be downloaded from `https://api.beshu.tech/download/trial?esVersion=$ELASTICSEARCH_VERSION`
 
 
 ## Starting services
 
 > :warning: Each service has been intended to run from dedicated script which configures environment variables used in docker-compose.yml, builds proper image and runs it. If you want to use docker-compose directly check section "Using docker-compose manually" 
 
-There are few dedicated scripts to run services, prepare env for custom use and clean env from data. Scripts which are used to run services are starting in terminal attached mode. It's done this way to make it less likely that you will forgot to reload service after config change or service would be left running in background.
+There are few dedicated scripts to run services, prepare env for custom use and clean env from data. Scripts which are used to run services are starting in terminal attached mode. It's done this way to make it less likely that you will forgot to reload service after config change or service would be left running in background. To stop service press `Ctrl+C`.
 
 Each script was intended to be executed from root sandbox directory. Using it from other directories will fuck up hardcoded paths. Here's a list of all scripts:
 
-* `run_elasticsearch.sh` - will build and run elasticsearch service in terminal attached mode
-* `run_kibana.sh` - will build and run kibana service in terminal attached mode
-* `run_kibana_for_eshome.sh` - will build and run kibana service dedicated to use with `eshome` in terminal attached mode
+* `run_elasticsearch.sh` - will build and run elasticsearch service.
+* `run_kibana.sh` - will build and run kibana service.
+* `run_kibana_for_eshome.sh` - will build and run kibana service dedicated to use with `eshome`.
+* `run_elasticsearch_and_kibana.sh` - will build and run both elasticsearch and kibana. Using `Ctrl+C` on this script will stop both services, so if you want to have possibility to restart just one service use above scripts starting single service.
 * `prepare_dc_for_custom_use.sh` - will prepare sandbox to use docker-compose manually. Remember to use it with `source ./prepare_dc_for_custom_use.sh`
 * `clean.sh` - will bring down and remove all containers. Elasticsearch data will be removed by this command.
 * `clean_all.sh` - will do exactly what command above additionally will remove volumes with kibana cache.
@@ -67,3 +68,24 @@ Here's how to use it:
 1. After each change to `env_configuration` repeat step 2.
 
 ## Use cases
+All examples here assume that you are in sandbox root directory
+### Starting both kibana and elasticsearch X.Y.Z with latest ROR plugin
+1. Open `conf/env_configuration` and change value of `ELASTICSEARCH_VERSION` to X.Y.Z
+1. Execute `./run_elasticsearch_and_kibana.sh` or if you want to eventually restart kibana or elasticsearch execute `./run_elasticsearch.sh` in on tab of terminal and `./run_kibana.sh` in another.
+1. Optionally connect remote debugger to elasticsearch on `localhost:8888`
+1. Use `Ctrl+C` to stop services when you're done or want to restart them.
+
+### Starting both kibana and elasticsearch X.Y.Z with non-latest ROR plugin
+1. Open `conf/env_configuration` and: 
+  1. change value of `ELASTICSEARCH_VERSION` to X.Y.Z
+  1. change value of `CUSTOM_ROR_ELASTICSEARCH_LOCATION` to URL or file containing ROR elasticsearch plugin.
+  1. change value of `CUSTOM_ROR_KIBANA_LOCATION` to URL or file containing ROR kibana plugin.
+1. Execute `./run_elasticsearch_and_kibana.sh` or if you want to eventually restart kibana or elasticsearch execute `./run_elasticsearch.sh` in on tab of terminal and `./run_kibana.sh` in another.
+1. Optionally connect remote debugger to elasticsearch on `localhost:8888`
+1. Use `Ctrl+C` to stop services when you're done or want to restart them.
+
+### Starting kibana X.Y.Z for use with elasticsearch started from IDE.
+1. Start elasticsearch in IDE. Kibana assumes that it will be able to connect to it on port 9200.
+1. Open `conf/env_configuration` and change value of `ELASTICSEARCH_VERSION` to X.Y.Z
+1. Execute `./run_kibana_for_eshome.sh`
+1. Use `Ctrl+C` to stop kibana when you're done or want to restart it.
