@@ -1,4 +1,5 @@
 ELASTICSEARCH_VERSION=7.2.1
+KIBANA_VERSION=7.2.1
 
 # Leave empty if you want to use latest version from https://api.beshu.tech/download/es
 CUSTOM_ROR_ELASTICSEARCH_LOCATION=

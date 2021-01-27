@@ -1,6 +1,7 @@
 source ./conf/env_configuration
 
 export ELASTICSEARCH_VERSION
+export KIBANA_VERSION
 
 if [ -z "$CUSTOM_ROR_ELASTICSEARCH_LOCATION" ]
 then
