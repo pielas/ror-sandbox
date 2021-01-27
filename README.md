@@ -99,8 +99,11 @@ Here's description of how to connect remote debugger to running elasticsearch se
 1. Open `Edit configurations...` window. It can be done by pressing shift key twice and entering "Edit configurations" or from `Run->Edit configurations...` menu.
 1. If you don't have remote debugger configuration yet add it by clicking "+" icon and choosing `Remote JVM Debug` 
 ![add new configuration](https://i.imgur.com/0fp9pdt.png)
-1. New configuration will be automatically selected. You can assign it a custom name like "sandbox remote debugger" on presented screenshot. Host and port should be set exactly as they are on this screenshot. Last marked thing is module classpath. You should choose module corresponding to ES version you are trying to debug with name ending with `.main`. Module selected on screenshot is appropriate for debugging ES 7.2.x. ![remote debug](https://i.imgur.com/dznavJp.png)
+1. New configuration will be automatically selected. You can assign it a custom name like "sandbox remote debugger" on presented screenshot. Host and port should be set exactly as they are on this screenshot. Last marked thing is module classpath. You should choose module corresponding to ES version you are trying to debug with name ending with `.main`. Module selected on screenshot is appropriate for debugging ES 7.2.x. 
+![remote debug](https://i.imgur.com/dznavJp.png)
 1. Click OK to save configuration. 
-1. You should now see name of created configuration in upper right corner of IntelliJ IDEA. ![remote debug](https://i.imgur.com/vVSw2kt.png)
+1. You should now see name of created configuration in upper right corner of IntelliJ IDEA. 
+![remote debug](https://i.imgur.com/vVSw2kt.png)
 1. Click on a bug icon next to it to start debugger.
-1. After successful connection window like that should pop up from the bottom![successful debug connection](https://i.imgur.com/RoprVHF.png)
+1. After successful connection window like that should pop up from the bottom
+![successful debug connection](https://i.imgur.com/RoprVHF.png)
