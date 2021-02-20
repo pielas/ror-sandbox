@@ -121,24 +121,6 @@ All examples here assume that you are in sandbox root directory
 1. Execute `./run_kibana.sh -e`
 1. Use `Ctrl+C` to stop kibana when you're done or want to restart it.
 
-## Using ROR plugins from internal S3
-
-In default configuration sandbox uses the latest ROR Elasticsearch plugin and the latest ROR Kibana Enterprise plugin. If you want to use different version the easiest way to achieve that is by using links from internal S3. Below is instruction how to get these links. They have to be placed as values for `CUSTOM_ROR_ELASTICSEARCH_LOCATION` and `CUSTOM_ROR_KIBANA_LOCATION` envs. If you don't have access to S3 ask @sscarduzio.
-1. Got to http://download.readonlyrest.com and use your individual credentials
-![](images/s3/1.png)
-1. Select the build folder
-![](images/s3/2.png)
-1. 
-    * For ES builds, the path is /readonlyrest-data/build/
-    ![](images/s3/3.png)
-    * For non-trial Kibana builds the path is /readonlyrest-data/build/
-    ![](images/s3/4.png)
-    * For Trial versions, there's a /readonlyrest-data/build/trial/<created_at_timestamp>/
-    ![](images/s3/5.png)
-1. To get a signed URL, just click on a build, a modal will pop up.
-![](images/s3/6.png)
-1. Paste copied link into `CUSTOM_ROR_ELASTICSEARCH_LOCATION` or `CUSTOM_ROR_KIBANA_LOCATION` env variable located in `conf/env_configuration` file.
-
 ## Connecting IntelliJ IDEA remote debugger to Elasticsearch set up in sandbox 
 Here's description of how to connect remote debugger to running Elasticsearch server which has been started using this sandbox.
 1. Open the `elasticsearch-readonlyrest-plugin` project in IntelliJ IDEA.
