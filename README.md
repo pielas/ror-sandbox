@@ -77,8 +77,7 @@ There are few dedicated scripts to run services, prepare env for custom use and 
 Each script was intended to be executed from root sandbox directory. Using it from other directories will fuck up hardcoded paths. Here's a list of all scripts:
 
 * `run_elasticsearch.sh` - will build and run Elasticsearch service.
-* `run_kibana.sh` - will build and run Kibana service.
-* `run_kibana_for_eshome.sh` - will build and run Kibana service dedicated to use with `eshome` located in `elasticsearch-readonlyrest-plugin` repository. 
+* `run_kibana.sh` - will build and run Kibana service. You can use optional `--eshome` or `-e` parameter to run Kibana OSS dedicated to work with `eshome` ES instance located in `elasticsearch-readonlyrest-plugin` repository. 
 * `run_elasticsearch_and_kibana.sh` - will build and run both Elasticsearch and Kibana. Using `Ctrl+C` on this script will stop both services, so if you want to have possibility to restart just one service use above scripts starting single service.
 * `prepare_dc_for_custom_use.sh` - will prepare sandbox to use docker-compose manually. Remember to use it with `source ./prepare_dc_for_custom_use.sh`
 * `clean.sh` - will bring down and remove all containers. Elasticsearch data will be removed by this command.
@@ -119,7 +118,7 @@ All examples here assume that you are in sandbox root directory
 ```
 1. Start Elasticsearch in IDE. Kibana assumes that it will be able to connect to it on port 9200.
 1. Open `conf/env_configuration` and change value of `KIBANA_VERSION` to X.Y.Z
-1. Execute `./run_kibana_for_eshome.sh`
+1. Execute `./run_kibana.sh -e`
 1. Use `Ctrl+C` to stop kibana when you're done or want to restart it.
 
 ## Using ROR plugins from internal S3
