@@ -1,10 +1,10 @@
 ## ReadonlyREST sandbox
 
-Purpose of this sandbox is to make it easy to set up the Elasticsearch and optionally the Kibana, along with the ROR plugin. It's called sandbox because it creates isolated environment which is completely independent from what you have installed on your system. Additionally, it doesn't change any settings or data on system it's run on, besides created Docker volumes(which can be easily cleaned using `clean_all.sh` script). Because all of these features, it's well suited for tests, experiments with configuration, development and so on.
+The purpose of this sandbox is to make it easy to set up the Elasticsearch and optionally the Kibana, along with the ROR plugin. It's called sandbox because it creates an isolated environment that is completely independent of what you have installed on your system. Additionally, it doesn't change any settings or data on a system it's run on, besides created Docker volumes(which can be easily cleaned using clean_all.sh script). Because of all these features, it's well suited for tests, experiments with configuration, development and so on.
 
 Here's a list of things that you can do with this sandbox:
-* Set up specific version of Elasticsearch and Kibana with ROR plugin.
-* Set up Elasticsearch and Kibana along with ROR plugin from custom location.
+* Set up a specific version of Elasticsearch and Kibana with the ROR plugin.
+* Set up Elasticsearch and Kibana along with ROR plugin from a custom location.
 * Set up Elasticsearch for remote debugging.
 * Set up Kibana connected to Elasticsearch executed in IDE for Elasticsearch plugin debugging.
 
@@ -16,21 +16,21 @@ To use this sandbox you will need two things installed on your system: Docker an
 
 ### Quick start
 
-Sandbox comes pre-configured with some default settings which enable you to start it out of the box. Here's how you can do it:
+Sandbox comes pre-configured with some default settings, which enable you to start it out of the box. Here's how you can do it:
 1. Make sure that you have Docker and Docker Compose installed on your system.
 1. Open terminal.
-1. Go to the root directory of sandbox using `cd`.
-1. Execute `./run_elasticsearch_and_kibana.sh`. After a few seconds, or when you see log message `Status changed from red to green - Ready` Elasticsearch and Kibana should be ready to use.
-1. Go to http://localhost:5601 URL to open the Kibana's web UI. Default admin credentials are:
+1. Go to the root directory of the sandbox using `cd`.
+1. Execute `./run_elasticsearch_and_kibana.sh`. After a few seconds, or when you see the log message `Status changed from red to green - Ready` Elasticsearch and Kibana should be ready to use.
+1. Go to http://localhost:5601 URL to open Kibana's web UI. Default admin credentials are:
 ```
         Username: admin
         Password: passwd
 ```
-1. To stop the sandbox press `Ctrl+C` keys combination in terminal where sandbox was executed.
-1. By default, state of Elasticsearch and Kibana is preserved for the next run. If you want to clean it execute `./clean_all.sh`.
+1. To stop the sandbox, press the `Ctrl+C` keys combination in the terminal where the sandbox was executed.
+1. By default, the state of Elasticsearch and Kibana is preserved for the next run. If you want to clean it, execute `./clean_all.sh`.
 
 ## Configuration
-For most purposes it should be enough to change only files under `conf` directory to adapt sandbox to specific needs. Base sandbox settings such as Elasticsearch and Kibana version, plugins location can be changed in `env_configuration` file. This directory also contains configuration files used directly by Elasticsearch and Kibana services run in containers. If you want to change any service configuration file which isn't present under `conf` directory, you have to add it's mounts manually to `dc-internals/docker-compose.yml`. Description of Docker volumes and how to handle mounts can be found [here](https://docs.docker.com/compose/compose-file/compose-file-v3/#short-syntax-3).
+For most purposes, it should be enough to change only files under the `conf` directory to adapt the sandbox to specific needs. Base sandbox settings such as Elasticsearch and Kibana version, plugins location can be changed in `env_configuration` file. This directory also contains configuration files used directly by Elasticsearch and Kibana services run in containers. If you want to change any service configuration file which isn't present under the `conf` directory, you have to add it's mounting manually to `dc-internals/docker-compose.yml`. Description of Docker volumes and how to handle mounts can be found [here](https://docs.docker.com/compose/compose-file/compose-file-v3/#short-syntax-3).
 
 Here's description of each file under `conf` directory:
 * `conf/`
@@ -46,16 +46,16 @@ Here's description of each file under `conf` directory:
     * `kibana.yml` - minimal Kibana configuration file with debug logs enabled
 
 ### env_configuration file 
-This file contains environment variables used to configure sandbox. Here's description of each variable:
+This file contains environment variables used to configure the sandbox. Here's description of each variable:
 * `ELASTICSEARCH_VERSION` - version of Elasticsearch server to use. 
 * `KIBANA_VERSION` - version of Kibana server to use.
-* `USING_DOCKER_FOR_MAC_OR_WINDOWS` - variable controlling address of host machine in Docker containers. It's different for linux and for mac/windows. Set it to `y` when you are using macOS or Windows and `n` in other cases.
-* `CUSTOM_ROR_ELASTICSEARCH_LOCATION` - specifies custom URL for Elasticsearch ROR plugin. For example could be used to run elastic with file from S3. When empty, latest ROR will be downloaded from `https://api.beshu.tech/download/es?esVersion=$ELASTICSEARCH_VERSION`
-* `CUSTOM_ROR_KIBANA_LOCATION` - specifies custom URL for Kibana ROR plugin. For example could be used to run Kibana with file from S3. When empty, latest ROR will be downloaded from `https://api.beshu.tech/download/trial?esVersion=$ELASTICSEARCH_VERSION`
+* `USING_DOCKER_FOR_MAC_OR_WINDOWS` - variable controlling address of host machine in Docker containers. It's different for Linux and Mac/Windows. Set it to `y` when you are using macOS or Windows and `n` in other cases.
+* `CUSTOM_ROR_ELASTICSEARCH_LOCATION` - specifies custom URL for Elasticsearch ROR plugin. For example, could be used to run elastic with file from S3. When empty, the latest ROR will be downloaded from `https://api.beshu.tech/download/es?esVersion=$ELASTICSEARCH_VERSION`
+* `CUSTOM_ROR_KIBANA_LOCATION` - specifies custom URL for Kibana ROR plugin. For example, could be used to run Kibana with a file from S3. When empty, the latest ROR will be downloaded from `https://api.beshu.tech/download/trial?esVersion=$ELASTICSEARCH_VERSION`
 
 ### Architecture
-Whole sandbox is based on Docker and uses Docker Compose to orchestrate containers. There are 3 services configured in `dc-internals/docker-compose.yml`:
-* elasticsearch - could be used as standalone Elasticsearch instance with ability to connect remote debugger to it.
+The whole sandbox is based on Docker and uses Docker Compose to orchestrate containers. There are 3 services configured in `dc-internals/docker-compose.yml`:
+* elasticsearch - could be used as a standalone Elasticsearch instance with the ability to connect a remote debugger to it.
 * kibana - configured to connect to Elasticsearch instance from this sandbox.
 * kibana-oss - oss version of Kibana designated to work with Elasticsearch run from `eshome` located in `elasticsearch-readonlyrest-plugin` repository. 
 
@@ -72,19 +72,19 @@ By default services from sandbox expose these ports:
 
 > :warning: Each service has been intended to run from dedicated script which configures environment variables used in docker-compose.yml, builds proper image and runs it. If you want to use docker-compose directly check section "Using docker-compose manually" 
 
-There are few dedicated scripts to run services, prepare env for custom use and clean env from data. Scripts which are used to run services are starting in terminal attached mode. It's done this way to make it less likely that you will forgot to reload service after config change or service would be left running in background. To stop service press `Ctrl+C`.
+There are few dedicated scripts to run services, prepare env for custom use and clean env from data. Scripts that are used to run services are starting in terminal attached mode. It's done this way to make it less likely that you will forget to reload service after config change or service would be left running in the background. To stop service press `Ctrl+C`.
 
-Each script was intended to be executed from root sandbox directory. Using it from other directories will fuck up hardcoded paths. Here's a list of all scripts:
+Each script was intended to be executed from the root sandbox directory. Using it from other directories will fuck up hardcoded paths. Here's a list of all scripts:
 
 * `run_elasticsearch.sh` - will build and run Elasticsearch service.
-* `run_kibana.sh` - will build and run Kibana service. You can use optional `--eshome` or `-e` parameter to run Kibana OSS dedicated to work with `eshome` ES instance located in `elasticsearch-readonlyrest-plugin` repository. 
-* `run_elasticsearch_and_kibana.sh` - will build and run both Elasticsearch and Kibana. Using `Ctrl+C` on this script will stop both services, so if you want to have possibility to restart just one service use above scripts starting single service.
+* `run_kibana.sh` - will build and run the Kibana service. You can use the optional `--eshome` or `-e` parameter to run Kibana OSS dedicated to work with `eshome` ES instance located in `elasticsearch-readonlyrest-plugin` repository. 
+* `run_elasticsearch_and_kibana.sh` - will build and run both Elasticsearch and Kibana. Using `Ctrl+C` on this script will stop both services, so if you want to have possibility to restart just one service use the above scripts starting a single service.
 * `prepare_dc_for_custom_use.sh` - will prepare sandbox to use docker-compose manually. Remember to use it with `source ./prepare_dc_for_custom_use.sh`
 * `clean.sh` - will bring down and remove all containers. Elasticsearch data will be removed by this command.
 * `clean_all.sh` - will do exactly what command above, additionally removing volumes with Kibana cache.
 
 ### Using docker-compose manually
-If you want to have more control over how services are executed you can use script which will configure all env variables required by docker-compose, so it will be possible to execute docker-compose directly without using dedicated scripts. It's less convenient than using scripts because you have to remember to execute prepare script after each change to `env_configuration` file, so it's possible that you will run app with old settings.
+If you want to have more control over how services are executed you can use the script which will configure all env variables required by docker-compose, so it will be possible to execute docker-compose directly without using dedicated scripts. It's less convenient than using scripts because you have to remember to execute prepare script after each change to `env_configuration` file, so you may run an app with old settings.
 
 Here's how to use it:
 1. Go to sandbox directory using `cd`
