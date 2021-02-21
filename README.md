@@ -30,7 +30,7 @@ Sandbox comes pre-configured with some default settings, which enable you to sta
 1. By default, the state of Elasticsearch and Kibana is preserved for the next run. If you want to clean it, execute `./clean_all.sh`.
 
 ## Configuration
-For most purposes, it should be enough to change only files under the `conf` directory to adapt the sandbox to specific needs. Base sandbox settings such as Elasticsearch and Kibana version, plugins location can be changed in `env_configuration` file. This directory also contains configuration files used directly by Elasticsearch and Kibana services run in containers. If you want to change any service configuration file which isn't present under the `conf` directory, you have to add it's mounting manually to `dc-internals/docker-compose.yml`. Description of Docker volumes and how to handle mounts can be found [here](https://docs.docker.com/compose/compose-file/compose-file-v3/#short-syntax-3).
+For most purposes, it should be enough to change only files under the `conf` directory to adapt the sandbox to specific needs. Base sandbox settings such as Elasticsearch and Kibana version or plugins location can be changed in `env_configuration` file. This directory also contains configuration files mounted directly to Elasticsearch and Kibana services run in containers. If you want to change any service configuration file which isn't present under the `conf` directory, you have to add it's mounting manually to `dc-internals/docker-compose.yml`. Description of Docker volumes and how to handle mounts can be found [here](https://docs.docker.com/compose/compose-file/compose-file-v3/#short-syntax-3).
 
 Here's description of each file under `conf` directory:
 * `conf/`
@@ -72,9 +72,9 @@ By default services from sandbox expose these ports:
 
 > :warning: Each service has been intended to run from dedicated script which configures environment variables used in docker-compose.yml, builds proper image and runs it. If you want to use docker-compose directly check section "Using docker-compose manually" 
 
-There are few dedicated scripts to run services, prepare env for custom use and clean env from data. Scripts that are used to run services are starting in terminal attached mode. It's done this way to make it less likely that you will forget to reload service after config change or service would be left running in the background. To stop service press `Ctrl+C`.
+There are few dedicated scripts to run services, prepare env for custom use and clean env from data. Scripts that are used to run services start in terminal attached mode. It's done this way to make it less likely that you will forget to reload service after config change or service would be left running in the background. To stop service press `Ctrl+C`.
 
-Each script was intended to be executed from the root sandbox directory. Using it from other directories will fuck up hardcoded paths. Here's a list of all scripts:
+Each script was intended to be executed from the root sandbox directory. Using it from other directories will mess up hardcoded paths. Here's a list of all scripts:
 
 * `run_elasticsearch.sh` - will build and run Elasticsearch service.
 * `run_kibana.sh` - will build and run the Kibana service. You can use the optional `--eshome` or `-e` parameter to run Kibana OSS dedicated to work with `eshome` ES instance located in `elasticsearch-readonlyrest-plugin` repository. 
@@ -84,7 +84,7 @@ Each script was intended to be executed from the root sandbox directory. Using i
 * `clean_all.sh` - will do exactly what command above, additionally removing volumes with Kibana cache.
 
 ### Using docker-compose manually
-If you want to have more control over how services are executed you can use the script which will configure all env variables required by docker-compose, so it will be possible to execute docker-compose directly without using dedicated scripts. It's less convenient than using scripts because you have to remember to execute prepare script after each change to `env_configuration` file, so you may run an app with old settings.
+If you want to have more control over how services are executed you can use the script which will configure all env variables required by docker-compose, so it will be possible to execute docker-compose directly without using dedicated scripts. It's less convenient than using scripts because you have to remember to execute preparing script after each change to `env_configuration` file, so you may run an app with old settings.
 
 Here's how to use it:
 1. Go to sandbox directory using `cd`
@@ -96,7 +96,7 @@ Here's how to use it:
 All examples here assume that you are in sandbox root directory
 ### Starting both Kibana and Elasticsearch X.Y.Z with latest ROR plugin
 1. Open `conf/env_configuration` and change value of `ELASTICSEARCH_VERSION` and `KIBANA_VERSION` to X.Y.Z
-1. Execute `./run_elasticsearch_and_kibana.sh` or if you want to eventually restart Kibana or elasticsearch execute `./run_elasticsearch.sh` in on tab of terminal and `./run_kibana.sh` in another.
+1. Execute `./run_elasticsearch_and_kibana.sh` or if you want to individually restart Kibana or Elasticsearch execute `./run_elasticsearch.sh` in on tab of terminal and `./run_kibana.sh` in another.
 1. Optionally connect remote debugger to Elasticsearch to `localhost:8888`
 1. Use `Ctrl+C` to stop services when you're done or want to restart them.
 
@@ -116,6 +116,7 @@ All examples here assume that you are in sandbox root directory
   auth_key: kibana:kibana
   verbosity: error
 ```
+It's required by Kibana to work. 
 1. Start Elasticsearch in IDE. Kibana assumes that it will be able to connect to it on port 9200.
 1. Open `conf/env_configuration` and change value of `KIBANA_VERSION` to X.Y.Z
 1. Execute `./run_kibana.sh -e`
