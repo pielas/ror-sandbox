@@ -32,7 +32,7 @@ Sandbox comes pre-configured with some default settings, which enable you to sta
 ## Configuration
 For most purposes, it should be enough to change only files under the `conf` directory to adapt the sandbox to specific needs. Base sandbox settings such as Elasticsearch and Kibana version or plugins location can be changed in `env_configuration` file. This directory also contains configuration files mounted directly to Elasticsearch and Kibana services run in containers. If you want to change any service configuration file which isn't present under the `conf` directory, you have to add it's mounting manually to `dc-internals/docker-compose.yml`. Description of Docker volumes and how to handle mounts can be found [here](https://docs.docker.com/compose/compose-file/compose-file-v3/#short-syntax-3).
 
-Here's description of each file under `conf` directory:
+Here's description of each file under the `conf` directory:
 * `conf/`
   * `env_configuration` - file which is used to configure version of Elasticsearch and Kibana, location of ROR plugins, etc.
   * `elasticsearch/`
@@ -116,7 +116,6 @@ All examples here assume that you are in sandbox root directory
   auth_key: kibana:kibana
   verbosity: error
 ```
-It's required by Kibana to work. 
 1. Start Elasticsearch in IDE. Kibana assumes that it will be able to connect to it on port 9200.
 1. Open `conf/env_configuration` and change value of `KIBANA_VERSION` to X.Y.Z
 1. Execute `./run_kibana.sh -e`
